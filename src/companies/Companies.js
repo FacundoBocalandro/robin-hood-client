@@ -7,17 +7,17 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import {Search} from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 
-const companiesMock = [
-    ...Array(5).fill(0).map(() => ({name: "Apple", ticker: "AAPL", price: 100.0, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
-    ...Array(5).fill(0).map(() => ({name: "Tesla", ticker: "TSLA", price: 200.2, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
-    ...Array(5).fill(0).map(() => ({name: "Microsoft", ticker: "MSFT", price: 50.01, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
-    ...Array(5).fill(0).map(() => ({name: "NVIDIA", ticker: "NVDA", price: 1000.5, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
-    ...Array(5).fill(0).map(() => ({name: "Sirius", ticker: "SIR", price: 10000, up: true, percentage: 100})),
-].sort(() => 0.5 - Math.random());
+// const companiesMock = [
+//     ...Array(5).fill(0).map(() => ({name: "Apple", ticker: "AAPL", price: 100.0, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
+//     ...Array(5).fill(0).map(() => ({name: "Tesla", ticker: "TSLA", price: 200.2, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
+//     ...Array(5).fill(0).map(() => ({name: "Microsoft", ticker: "MSFT", price: 50.01, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
+//     ...Array(5).fill(0).map(() => ({name: "NVIDIA", ticker: "NVDA", price: 1000.5, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
+//     ...Array(5).fill(0).map(() => ({name: "Sirius", ticker: "SIR", price: 10000, up: true, percentage: 100})),
+// ].sort(() => 0.5 - Math.random());
 
 const Companies = () => {
     const [search, setSearch] = useState("");
-    const [companies, setCompanies] = useState([...companiesMock]);
+    const [companies, setCompanies] = useState([]);
 
     useEffect(() => {
         get('companies')
@@ -55,9 +55,9 @@ const Companies = () => {
                         </div>
                         <div className={"company-card-price"}>
                             <span className={"company-price"}>${company.price}</span>
-                            <div className={`company-card-percentage${company.up > 0 ? ' price-up' : ' price-down'}`}>
+                            <div className={`company-card-percentage${company.percentage > 0 ? ' price-up' : ' price-down'}`}>
                                 <span className={"company-percentage"}>% {company.percentage}</span>
-                                {company.up ? <ArrowUpwardIcon className={"arrow-icon"}/> : <ArrowDownwardIcon className={"arrow-icon"}/>}
+                                {company.percentage > 0 ? <ArrowUpwardIcon className={"arrow-icon"}/> : <ArrowDownwardIcon className={"arrow-icon"}/>}
                             </div>
                         </div>
                         <Button color={"default"} variant={"contained"}>Comprar</Button>

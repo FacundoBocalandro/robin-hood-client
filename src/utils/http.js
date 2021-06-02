@@ -5,11 +5,14 @@ httpClient.defaults.timeout = 1200000;
 
 
 const _request = async (url, method, data, config = {}) => {
+    const token = localStorage.getItem('token');
+    let headers = {...config.headers, Authorization: "Bearer " + token};
+    if (config.noAuth || !token) delete headers.Authorization;
     return httpClient({
-        url: "http://localhost:8001/" + url,
+        url: "http://localhost:8080/" + url,
         method,
         data,
-        ...config.headers, ...config.options
+        headers, ...config.options
     }).then((res) => {
         if (res.status === 200 || res.status === 201 || res.status === 204) return res.data;
         else throw (res.data);
@@ -23,3 +26,7 @@ export const post = (url, body, config = {}) => _request(url, "POST", body, conf
 export const put = (url, body, config = {}) => _request(url, "PUT", body, config);
 export const patch = (url, body, config = {}) => _request(url, "PATCH", body, config);
 export const deleteRequest = (url, body, config = {}) => _request(url, "DELETE", body, config);
+
+export const isAuthenticated = () => {
+    return localStorage.getItem('token') !== null;
+}

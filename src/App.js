@@ -1,8 +1,10 @@
 import './main.css';
-import {Switch, Route, BrowserRouter} from "react-router-dom";
+import {Switch, BrowserRouter} from "react-router-dom";
 import LoginContainer from "./session/login/LoginContainer";
 import RegisterContainer from "./session/register/RegisterContainer";
 import Companies from "./companies/Companies";
+import ReversePrivateRoute from "./security/ReversePrivateRoute";
+import PrivateRoute from "./security/PrivateRoute";
 
 function App() {
 
@@ -10,9 +12,9 @@ function App() {
         <BrowserRouter>
             <div className={"app-container"}>
                 <Switch style={{width: '100%', height: '100%'}}>
-                    <Route exact path={"/"} component={LoginContainer}/>
-                    <Route path={"/register"} component={RegisterContainer}/>
-                    <Route path={"/main/companies"} component={Companies}/>
+                    <ReversePrivateRoute exact path={"/"} component={LoginContainer}/>
+                    <ReversePrivateRoute path={"/register"} component={RegisterContainer}/>
+                    <PrivateRoute path={"/main/home"} component={Companies}/>
                 </Switch>
             </div>
         </BrowserRouter>
