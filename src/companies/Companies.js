@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import {InputAdornment, TextField} from "@material-ui/core";
 import {get} from "../utils/http";
 import "./Companies.css";
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import {Search} from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
+import CompanyCard from "../company-card/CompanyCard";
+import BuyStockModal from "../buy-stock-modal/BuyStockModal";
+import {useHistory} from "react-router";
 
 // const companiesMock = [
 //     ...Array(5).fill(0).map(() => ({name: "Apple", ticker: "AAPL", price: 100.0, up: (Math.random() < 0.5), percentage: Math.random().toFixed(2)})),
@@ -16,8 +16,10 @@ import Button from "@material-ui/core/Button";
 // ].sort(() => 0.5 - Math.random());
 
 const Companies = () => {
+
     const [search, setSearch] = useState("");
     const [companies, setCompanies] = useState([]);
+    const [modalInfo, setModalInfo] = useState({open: false});
 
     useEffect(() => {
         get('companies')
@@ -32,13 +34,43 @@ const Companies = () => {
 
     const filteredCompanies = companies.filter(includesSearch);
 
+    const openModal = (company) => {
+        setModalInfo({open: true, company, shares: 0});
+    }
+
+    const history = useHistory();
+    const redirectToStocks = () => {
+        history.push('/main/stocks')
+    }
+
+    const handleBuy = () => {
+        setModalInfo({...modalInfo, confirmed: true})
+    }
+
+    const closeModal = () => setModalInfo({open: false})
+
+    const onlyNumbers = (value) => {
+        return value.replaceAll(/([^0-9])+/g, '')
+    }
+
+    const changeShares = (e) => {
+        setModalInfo({...modalInfo, shares: onlyNumbers(e.target.value)})
+    }
+
+
     return (
         <div className={"companies-screen"}>
+            {modalInfo.open && <BuyStockModal modalInfo={modalInfo}
+                                              closeModal={closeModal}
+                                              handleBuy={handleBuy}
+                                              changeShares={changeShares}
+                                              redirectToStocks={redirectToStocks}/>}
+
             <TextField className={"companies-search-input"}
                        InputProps={{
                            startAdornment: (
                                <InputAdornment position="start">
-                                   <Search />
+                                   <Search/>
                                </InputAdornment>
                            ),
                        }}
@@ -48,28 +80,15 @@ const Companies = () => {
             />
             <div className={"companies-list"}>
                 {filteredCompanies.length > 0 ? filteredCompanies.map(company => (
-                    <div className={"company-card"}>
-                        <div className={"company-card-header"}>
-                            <span className={"company-ticker"}>{company.ticker}</span>
-                            <span className={"company-name"}>{company.name}</span>
-                        </div>
-                        <div className={"company-card-price"}>
-                            <span className={"company-price"}>${company.price}</span>
-                            <div className={`company-card-percentage${company.percentage > 0 ? ' price-up' : ' price-down'}`}>
-                                <span className={"company-percentage"}>% {company.percentage}</span>
-                                {company.percentage > 0 ? <ArrowUpwardIcon className={"arrow-icon"}/> : <ArrowDownwardIcon className={"arrow-icon"}/>}
-                            </div>
-                        </div>
-                        <Button color={"default"} variant={"contained"}>Comprar</Button>
+                        <CompanyCard company={company} onClick={() => openModal(company)}/>
+                    )) :
+                    <div className={"no-results-text"}>
+                        No se han encontrado resultados para su búsqueda
                     </div>
-                )) :
-                <div className={"no-results-text"}>
-                    No se han encontrado resultados para su búsqueda
-                </div>
                 }
             </div>
         </div>
     )
 }
 
-export default Companies;
+export default Companies
