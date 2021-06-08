@@ -24,8 +24,7 @@ const Companies = () => {
     useEffect(() => {
         get('companies')
             .then(res => setCompanies(res))
-            .catch(err => {
-            })
+            .catch(err => console.log(err))
     }, [])
 
     const includesSearch = (value) => {
