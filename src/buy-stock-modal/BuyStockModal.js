@@ -8,8 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import {TextField} from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 
-const BuyStockModal = ({modalInfo, closeModal, redirectToStocks, handleBuy, changeShares}) => {
-    const balance = 100000;
+const BuyStockModal = ({modalInfo, closeModal, redirectToStocks, handleBuy, changeShares, accountBalance}) => {
 
     const numberWithCommas = (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -47,16 +46,16 @@ const BuyStockModal = ({modalInfo, closeModal, redirectToStocks, handleBuy, chan
                                 fullWidth
                                 value={modalInfo.shares}
                                 onChange={changeShares}
-                                error={(modalInfo.shares * modalInfo.company.price) > balance}
+                                error={(modalInfo.shares * modalInfo.company.price) > accountBalance}
                             />
                             <div>Total Price: ${numberWithCommas(modalInfo.shares * modalInfo.company.price)}</div>
-                            <div>Your Balance: ${numberWithCommas(balance)}</div>
+                            <div>Your Balance: ${numberWithCommas(accountBalance)}</div>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={closeModal} variant={"contained"}>
                                 Cancel
                             </Button>
-                            <Button onClick={handleBuy} color="primary" variant={"contained"}>
+                            <Button onClick={handleBuy} color="primary" variant={"contained"} disabled={(modalInfo.shares * modalInfo.company.price) > accountBalance || modalInfo.shares === 0}>
                                 Buy
                             </Button>
                         </DialogActions>

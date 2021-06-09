@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {InputAdornment, TextField} from "@material-ui/core";
-import {get} from "../utils/http";
+import {get, post} from "../utils/http";
 import "./Companies.css";
 import {Search} from "@material-ui/icons";
 import CompanyCard from "../company-card/CompanyCard";
@@ -20,11 +20,14 @@ const Companies = () => {
     const [search, setSearch] = useState("");
     const [companies, setCompanies] = useState([]);
     const [modalInfo, setModalInfo] = useState({open: false});
+    const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
+        get('user')
+            .then(res => setUserInfo(res));
         get('companies')
             .then(res => setCompanies(res))
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     }, [])
 
     const includesSearch = (value) => {
@@ -43,7 +46,16 @@ const Companies = () => {
     }
 
     const handleBuy = () => {
-        setModalInfo({...modalInfo, confirmed: true})
+        post('transaction', {
+            amount: modalInfo.shares, price: modalInfo.company.price, tickerDto: {
+                companyName: modalInfo.company.name,
+                id: modalInfo.company.id,
+                tickerName: modalInfo.company.ticker
+            }
+        }).then((res) => {
+            setUserInfo(res.userDto)
+            setModalInfo({...modalInfo, confirmed: true})
+        })
     }
 
     const closeModal = () => setModalInfo({open: false})
@@ -63,7 +75,7 @@ const Companies = () => {
                                               closeModal={closeModal}
                                               handleBuy={handleBuy}
                                               changeShares={changeShares}
-                                              redirectToStocks={redirectToStocks}/>}
+                                              redirectToStocks={redirectToStocks} accountBalance={userInfo.accountBalance}/>}
 
             <TextField className={"companies-search-input"}
                        InputProps={{

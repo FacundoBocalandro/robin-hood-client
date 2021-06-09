@@ -5,6 +5,7 @@ import RegisterContainer from "./session/register/RegisterContainer";
 import Companies from "./companies/Companies";
 import ReversePrivateRoute from "./security/ReversePrivateRoute";
 import PrivateRoute from "./security/PrivateRoute";
+import NavbarContainer from "./navbar/NavbarContainer";
 
 function App() {
 
@@ -14,7 +15,14 @@ function App() {
                 <Switch style={{width: '100%', height: '100%'}}>
                     <ReversePrivateRoute exact path={"/"} component={LoginContainer}/>
                     <ReversePrivateRoute path={"/register"} component={RegisterContainer}/>
-                    <PrivateRoute path={"/main/home"} component={Companies}/>
+                    <PrivateRoute path='/main' component={({match: {url}}) => ([
+                        <div key={'app-frame'} className={"app-frame"}>
+                            <NavbarContainer/>
+                            <Switch className={"app-content"}>
+                                <PrivateRoute path={`${url}/home`} component={Companies}/>
+                            </Switch>
+                        </div>
+                    ])}/>
                 </Switch>
             </div>
         </BrowserRouter>
