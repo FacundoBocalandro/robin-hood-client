@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { forwardRef } from 'react';
 import MaterialTable from 'material-table';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -8,6 +8,7 @@ import Clear from '@material-ui/icons/Clear';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
 import Search from '@material-ui/icons/Search';
+import {get} from "../utils/http";
 
 const tableIcons = {
     FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
@@ -21,22 +22,22 @@ const tableIcons = {
 };
 
 const MyStocks = () => {
+    const [data, setData] = useState([])
 
-    const data = [
-        { name: 'Company 1', ticker: 'COM1', shares: 10, purchase: 55, price: 63, value: 183000, result: "10%" },
-        { name: 'Company 2', ticker: 'COM2', shares: 3, purchase: 10, price: 8, value: 23200, result: "-15%" },
-        { name: 'Company 3', ticker: 'COM3', shares: 18, purchase: 98, price: 120, value: 275000, result: "30%" },
-    ]
+    useEffect(() => {
+        get('get-all')
+            .then(res => setData(res));
+        // eslint-disable-next-line
+    }, [])
 
     const columns = [
-        { title: 'Name', field: 'name' },
-        { title: 'Ticker', field: 'ticker' },
-        { title: 'Shares', field: 'shares' },
-        { title: 'Purchase Price', field: 'purchase' },
-        { title: 'Actual Price', field: 'price' },
-        { title: 'Value', field: 'value' },
-        { title: 'Result', field: 'result' },
-
+        { title: 'Name', field: 'companyName' },
+        { title: 'Ticker', field: 'tickerName' },
+        { title: 'Shares', field: 'amount' },
+        { title: 'Purchase Price', field: 'purchasePrice', render: data => `$${data.purchasePrice}` },
+        { title: 'Actual Price', field: 'actualPrice', render: data => `$${data.actualPrice}` },
+        { title: 'Actual Value', field: 'actualTotal', render: data => `$${data.actualTotal}` },
+        { title: 'Result', field: 'result', render: data => `%${data.result}` },
     ];
 
     return (

@@ -10,7 +10,15 @@ const NavbarContainer = () => {
         history.push('/')
     }
 
-    return <Navbar logout={logout}/>
+    const redirectToStocks = () => {
+        history.push('/main/stocks')
+    }
+
+    const redirectToHome = () => {
+        history.push('/main/home')
+    }
+
+    return <Navbar logout={logout} redirectToStocks={redirectToStocks} redirectToHome={redirectToHome}/>
 }
 
 export default NavbarContainer

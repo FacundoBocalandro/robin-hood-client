@@ -14,16 +14,17 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-export default function Navbar({logout}) {
+export default function Navbar({logout, redirectToStocks, redirectToHome}) {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
+                    <Typography variant="h6" className={classes.title} onClick={redirectToHome}>
                         RobinCopy
                     </Typography>
+                    <Button color="inherit" onClick={redirectToStocks}>Stocks</Button>
                     <Button color="inherit" onClick={logout}>Logout</Button>
                 </Toolbar>
             </AppBar>
