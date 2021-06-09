@@ -48,7 +48,7 @@ const MyStocks = () => {
                 columns={columns}
                 data={data}
                 options={{
-                    grouping: true
+                    grouping: false
                 }}
             />
         </div>
