@@ -85,6 +85,7 @@ const Companies = () => {
                                </InputAdornment>
                            ),
                        }}
+                       data-cy={"company-search"}
                        value={search}
                        onChange={e => setSearch(e.target.value)}
                        placeholder={"Search by company name or ticker..."}

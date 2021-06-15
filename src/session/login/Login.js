@@ -87,6 +87,7 @@ const Login = ({loginRequest}) => {
                             autoFocus
                             value={user.username}
                             onChange={e => setUser({...user, username: e.target.value})}
+                            data-cy={"login-username"}
                         />
                         <TextField
                             variant="outlined"
@@ -100,6 +101,7 @@ const Login = ({loginRequest}) => {
                             autoComplete="current-password"
                             value={user.password}
                             onChange={e => setUser({...user, password: e.target.value})}
+                            data-cy={"login-password"}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
@@ -111,6 +113,7 @@ const Login = ({loginRequest}) => {
                             color="primary"
                             className={classes.submit}
                             onClick={() => loginRequest(user)}
+                            data-cy={"sign-in-button"}
                         >
                             Sign In
                         </Button>
@@ -121,7 +124,7 @@ const Login = ({loginRequest}) => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="/register" variant="body2">
+                                <Link href="/register" variant="body2" data-cy={"dont-have-account"}>
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

@@ -27,7 +27,7 @@ const BuyStockModal = ({modalInfo, closeModal, redirectToStocks, handleBuy, chan
                                 <div className="icon-fix"/>
                             </div>
                         </div>
-                        <Button onClick={redirectToStocks} variant={"contained"} color={"primary"}>
+                        <Button onClick={redirectToStocks} variant={"contained"} color={"primary"} data-cy={"my-stocks-button"}>
                             My Stocks
                         </Button>
                     </div> :
@@ -47,6 +47,7 @@ const BuyStockModal = ({modalInfo, closeModal, redirectToStocks, handleBuy, chan
                                 value={modalInfo.shares}
                                 onChange={changeShares}
                                 error={(modalInfo.shares * modalInfo.company.price) > accountBalance}
+                                data-cy={"buy-modal-shares"}
                             />
                             <div>Total Price: ${numberWithCommas(modalInfo.shares * modalInfo.company.price)}</div>
                             <div>Your Balance: ${numberWithCommas(accountBalance)}</div>
@@ -55,7 +56,9 @@ const BuyStockModal = ({modalInfo, closeModal, redirectToStocks, handleBuy, chan
                             <Button onClick={closeModal} variant={"contained"}>
                                 Cancel
                             </Button>
-                            <Button onClick={handleBuy} color="primary" variant={"contained"} disabled={(modalInfo.shares * modalInfo.company.price) > accountBalance || modalInfo.shares === 0}>
+                            <Button onClick={handleBuy} color="primary" variant={"contained"}
+                                    data-cy={"buy-modal-button"}
+                                    disabled={(modalInfo.shares * modalInfo.company.price) > accountBalance || modalInfo.shares === 0}>
                                 Buy
                             </Button>
                         </DialogActions>

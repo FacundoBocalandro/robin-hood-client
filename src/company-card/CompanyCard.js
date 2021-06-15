@@ -23,7 +23,8 @@ const CompanyCard = (props) => {
                 </div>
             </div>
             <Button color={"default"} variant={"contained"}
-                    onClick={props.onClick}>Comprar</Button>
+                    data-cy={"buy-button"}
+                    onClick={props.onClick}>Buy</Button>
         </div>
     )
 }

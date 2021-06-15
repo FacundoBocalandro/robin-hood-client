@@ -83,6 +83,7 @@ const Register = ({registerRequest}) => {
                                 autoFocus
                                 onChange={e => setUser({...user, firstName: e.target.value})}
                                 value={user.firstName}
+                                data-cy={'register-first-name'}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -96,6 +97,7 @@ const Register = ({registerRequest}) => {
                                 autoComplete="lname"
                                 onChange={e => setUser({...user, lastName: e.target.value})}
                                 value={user.lastName}
+                                data-cy={'register-last-name'}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -109,6 +111,7 @@ const Register = ({registerRequest}) => {
                                 autoComplete="uname"
                                 onChange={e => setUser({...user, username: e.target.value})}
                                 value={user.username}
+                                data-cy={'register-username'}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -122,6 +125,7 @@ const Register = ({registerRequest}) => {
                                 autoComplete="email"
                                 onChange={e => setUser({...user, email: e.target.value})}
                                 value={user.email}
+                                data-cy={'register-email'}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -136,6 +140,7 @@ const Register = ({registerRequest}) => {
                                 autoComplete="current-password"
                                 onChange={e => setUser({...user, password: e.target.value})}
                                 value={user.password}
+                                data-cy={'register-password'}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -151,6 +156,7 @@ const Register = ({registerRequest}) => {
                         color="primary"
                         className={classes.submit}
                         onClick={() => registerRequest(user)}
+                        data-cy={'sign-up-button'}
                     >
                         Sign Up
                     </Button>

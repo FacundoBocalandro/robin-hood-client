@@ -1,0 +1,30 @@
+describe('End 2 End test', () => {
+
+    it('test all application', () => {
+        const username = Date.now().toString();
+
+        cy.visit('http://localhost:3000')
+        cy.get('[data-cy=dont-have-account]').click()
+        cy.get('[data-cy=register-first-name]').type("Elias")
+        cy.get('[data-cy=register-last-name]').type("Leonov")
+        cy.get('[data-cy=register-username]').type(username)
+        cy.get('[data-cy=register-email]').type("eliasleonov@sirius.com.ar")
+        cy.get('[data-cy=register-password]').type("ELIASLEONOV1234")
+        cy.get('[data-cy=sign-up-button]').click()
+        cy.get('[data-cy=login-username]').type(username)
+        cy.get('[data-cy=login-password]').type("ELIASLEONOV1234")
+        cy.get('[data-cy=sign-in-button]').click()
+        cy.get('[data-cy=company-search]').type("amazon")
+        cy.get('[data-cy=buy-button]').click()
+        cy.get('[data-cy=buy-modal-shares]').type("10")
+        cy.get('[data-cy=buy-modal-button]').click()
+        cy.get('[data-cy=my-stocks-button]').click()
+        cy.get('[data-cy=redirect-home-button]').click()
+        cy.get('[data-cy=company-search]').type("amd")
+        cy.get('[data-cy=buy-button]').click()
+        cy.get('[data-cy=buy-modal-shares]').type("5")
+        cy.get('[data-cy=buy-modal-button]').click()
+        cy.get('[data-cy=my-stocks-button]').click()
+        cy.get('[data-cy=logout-button]').click()
+    })
+})
