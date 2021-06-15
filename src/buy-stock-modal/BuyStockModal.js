@@ -11,6 +11,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 const BuyStockModal = ({modalInfo, closeModal, redirectToStocks, handleBuy, changeShares, accountBalance}) => {
 
     const numberWithCommas = (x) => {
+        if (!x) return;
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
