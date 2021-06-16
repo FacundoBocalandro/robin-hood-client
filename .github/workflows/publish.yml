@@ -1,0 +1,63 @@
+name: publish
+
+on:
+  push:
+    branches: [ develop, master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Install dependencies
+        run: npm install
+      - name: Run the tests
+        run: npm test
+      - name: Build
+        run: npm run build
+
+  publish-dev-image:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          run: |
+              IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
+
+              # Change all uppercase to lowercase
+              IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+              # Strip git ref prefix from BRANCH_NAME
+              BRANCH_NAME=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+              # Strip "v" prefix from tag name
+              [[ "${{ github.ref }}" == "refs/tags/"* ]] && BRANCH_NAME=$(echo $BRANCH_NAME | sed -e 's/^v//')
+              [ "$BRANCH_NAME" == "master" ] && BRANCH_NAME=production
+
+              echo IMAGE_ID=$IMAGE_ID
+              echo BRANCH_NAME=$BRANCH_NAME
+              docker build . --tag $IMAGE_ID-$BRANCH_NAME:$ROBIN_HOOD_VERSION
+              docker push $IMAGE_ID-$BRANCH_NAME:latest
+        env:
+          IMAGE_NAME: robin_copy_client
